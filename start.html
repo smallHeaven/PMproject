@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <title>Untitled Document</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <link type="text/css" href="resources/css/reset.css" rel="Stylesheet">
-    <link type="text/css" href="resources/css/default.css" rel="Stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link type="text/css" href="resources/css/reset.css" rel="Stylesheet" />
+    <link type="text/css" href="resources/css/default.css" rel="Stylesheet" />
     <!--<link href='https://fonts.googleapis.com/css?family=Nunito:300' rel='stylesheet' type='text/css'>-->
 
     <script type="text/javascript">
@@ -16,11 +16,12 @@
         }
     </script>
 
-    <!-- 8.0.0.3377 -->
-<script src="resources/scripts/jquery-1.7.1.min.js"></script>
-<script src="resources/scripts/startPre.js"></script>
-<script src="data/document.js"></script>
-
+    <script type="text/javascript" src="resources/scripts/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="resources/scripts/player/splitter.js"></script>
+    <script type="text/javascript" src="resources/scripts/axutils.js"></script>
+    <script type="text/javascript" src="resources/scripts/player/axplayer.js"></script>
+    <script type="text/javascript" src="resources/scripts/messagecenter.js"></script>
+    <script type="text/javascript" src="data/document.js"></script>
     <style type="text/css">
 
 #outerContainer {
@@ -170,22 +171,6 @@
                 }
 
                 var mainFrame = document.getElementById("mainFrame");
-                //if it's local file on safari, test if we can access mainframe after its loaded
-                if(SAFARI && document.location.href.indexOf('file://') >= 0) {
-                    $(mainFrame).load(function () {
-                        var canAccess;
-                        try {
-                            var mainFrameWindow = mainFrame.contentWindow || mainFrame.contentDocument;
-                            mainFrameWindow['safari_file_CORS'] = 'Y';
-                            canAccess = mainFrameWindow['safari_file_CORS'] === 'Y';
-                        } catch(err) {
-                            canAccess = false;
-                        }
-
-                        if(!canAccess) window.location = 'resources/chrome/safari.html';
-                    });
-                }
-
                 mainFrame.contentWindow.location.href = getInitialUrl();
             }
 
@@ -469,63 +454,24 @@
             }
         }
     --></script>
-    
-    <link type="text/css" rel="Stylesheet" href="plugins/sitemap/styles/sitemap.css">
-    <link type="text/css" rel="Stylesheet" href="plugins/page_notes/styles/page_notes.css">
-    <link type="text/css" rel="Stylesheet" href="plugins/debug/styles/debug.css">
-    <script src="resources/scripts/startPost.js"></script>
 
-
+    <link type="text/css" rel="Stylesheet" href="plugins/sitemap/styles/sitemap.css" />
+    <script type="text/javascript" src="plugins/sitemap/sitemap.js"></script>
+    <link type="text/css" rel="Stylesheet" href="plugins/page_notes/styles/page_notes.css" />
+    <script type="text/javascript" src="plugins/page_notes/page_notes.js"></script>
     <!--<link type="text/css" rel="Stylesheet" href="plugins/recordplay/styles/recordplay.css" />
     <script type="text/javascript" src="plugins/recordplay/recordplay.js"></script>-->
-    
+    <link type="text/css" rel="Stylesheet" href="plugins/debug/styles/debug.css" />
+    <script type="text/javascript" src="plugins/debug/debug.js"></script>
 
-
-                    <script id="axure_preview">
-                        ;(function(){
-                            console.log('axure_preview init')
-                            if(location.hostname !== "127.0.0.1" && location.hostname !== "localhost"){
-                                return 
-                            }
-                            if(window.top !== window){
-                                return
-                            }
-                            if(window.history && history.replaceState){
-                                if(!location.hash){
-                                    history.replaceState(null,null,'#lh=1')
-                                    lh_preview()
-                                }else if(location.hash.indexOf('lh=') === -1){
-                                    history.replaceState(null,null,location.hash+'&lh=1')
-                                    lh_preview()
-                                }
-                            }
-
-                            function lh_preview(port,stamp){
-                                port = port || location.port
-                                stamp = stamp || 0
-                                location.href = location.href
-                                if(window.$ && $.get){
-                                    console.log("lh_preview")
-                                    $.get("http://localhost:32764/preview?port="+port)
-                                }else if(stamp<3000){
-                                    console.log("lh_preview setTimeout ",stamp)
-                                    setTimeout(function(){
-                                        lh_preview(port,stamp+300)
-                                    },300)
-                                }else{
-                                    console.log("lh_preview fail")
-                                }
-                            }
-                        })();
-                    </script>
-                </head>
+</head>
 <body scroll="no" class="hashover">
     <div id="outerContainer">
 
         <div id="leftPanel">
             <div id="interfaceControlFrame">
                 <div id="interfaceControlFrameMinimizeContainer">
-                    <a title="Collapse" id="interfaceControlFrameMinimizeButton" onclick="collapse();">&#xA0;</a>
+                    <a title="Collapse" id="interfaceControlFrameMinimizeButton" onclick="collapse();">&nbsp;</a>
                 </div>
                 <div id="interfaceControlFrameHeaderContainer">
                     <ul id="interfaceControlFrameHeader"></ul>
@@ -544,7 +490,7 @@
             </div>
         </div>
         <div id="rightPanel">
-            <iframe id="mainFrame" name="mainFrame" width="100%" height="100%" src="" frameborder="0" style="display: block;" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen></iframe>
+            <iframe id="mainFrame" name="mainFrame" width="100%" height="100%" src="" frameborder="0" style="display: block;" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         </div>
 
     </div>
